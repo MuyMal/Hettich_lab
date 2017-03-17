@@ -23,6 +23,7 @@ def createFileList():
 			entry = line[5].split("_assigned")[0]
 			value = ("MSCluster/New_depth/" + entry + "_depths.txt", "MSCluster/ScanRanker_Test/"+ entry +"-ScanRankerMetrics-adjusted.txt")
 			file_list.append(value)
+	return file_list
 
 
 ## creates the mzml_dict, which is indexed by file names. Each file points to a sub-dictionary which is indexed by the MS2 scan number. The values of these dictionaries are
@@ -41,7 +42,7 @@ def createMzMLDict():
 				values = [line_spt[0],line_spt[2],line_spt[5]] #currently stores MS2 scan number, Scan start time, and MS1 precursor intensity
 				indices[line_spt[0]] = values          ## each sub-dictionary is indexed by MS2 scan number
 			mzml_dict[name] = indices
-	return None
+	return mzml_dict
 				
 
 ## Functions in a similar fashion to createMzMLDict()
@@ -107,9 +108,9 @@ def createMatrix(j_range = 0 ,entry = "data"):
 
 def combineData(entry = "data"):
 	print "Creating Dictionaries"
-	file_list = createFileList(file_list)
-	mzml_dict = createMzMLDict_2(mzml_dict)
-	scan_dict = createScanDict(scan_dict)
+	file_list = createFileList()
+	mzml_dict = createMzMLDict()
+	scan_dict = createScanDict()
 	print "Done...Collecting information for collective files"
 	with open(entry+"_indexed.txt","r") as fin, open(entry+"_collective_test.txt","w") as out:
 		out.write("File_Index_Number\tTarget_MS2_Scan\tScan_Index_Num\tNative_ID\tm/z\tPrecursorMZ\tCharger\tPrecursor_Mass\tScanRankerScore\tAdjusted_ScanRanker_Score\tMS1_Precursor_Intensity\tMS2_Start_Time\tCluster_Index\tSimilarity_Score\tp-value\tNum_Cluster_Members\tCluster_m/z\n")
